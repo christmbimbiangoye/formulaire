@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>To-Do List en React (CDN)</title>
+
+  <!-- 🎨 Style CSS intégré -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 40px;
+      text-align: center;
+    }
+
+    #app {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 10px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      text-align: left;
+      margin: 5px 0;
+      padding: 8px;
+      background: #e0e0e0;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔲 Zone où l'application React va s'afficher -->
+  <div id="app"></div>
+
+  <!-- 📦 Ajout de React + ReactDOM via CDN (aucune installation nécessaire) -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+  <!-- 📦 Babel permet d’utiliser du code JSX (syntaxe React) directement dans le navigateur -->
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+  <!-- 📜 Script principal en React avec JSX -->
+  <script type="text/babel">
+    // 📌 On extrait la fonction useState depuis React
+    const { useState } = React;
+
+    // ✅ Composant principal de l'application
+    function TodoApp() {
+      // 🔁 tasks contient toutes les tâches de la to-do list
+      // 🆕 newTask contient le texte de la tâche en cours d’écriture
+      const [tasks, setTasks] = useState([]);
+      const [newTask, setNewTask] = useState("");
+
+      // ➕ Fonction pour ajouter une tâche à la liste
+      const addTask = () => {
+        if (newTask.trim() === "") return; // Ignore si vide
+        setTasks([...tasks, newTask]); // Ajoute la nouvelle tâche au tableau
+        setNewTask(""); // Réinitialise le champ de saisie
+      };
+
+      // ❌ Fonction pour supprimer une tâche (par son index)
+      const removeTask = (index) => {
+        const updated = tasks.filter((_, i) => i !== index);
+        setTasks(updated); // Met à jour la liste sans la tâche supprimée
+      };
+
+      // 🖼️ Ce que le composant affiche à l’écran (UI)
+      return (
+        <div>
+          <h2>La To-Do List DE CHRISTMBIMBIANGOYE</h2>
+
+          {/* Champ pour écrire une tâche */}
+          <input
+            type="text"
+            placeholder="Nouvelle tâche"
+            value={newTask}
+            onChange={(e) => setNewTask(e.target.value)}
+          />
+
+          {/* Bouton pour ajouter une tâche */}
+          <button onClick={addTask}>Ajouter</button>
+
+          {/* Liste des tâches */}
+          <ul>
+            {tasks.map((task, index) => (
+              <li key={index}>
+                {task}
+                {/* Bouton pour supprimer une tâche */}
+                <button onClick={() => removeTask(index)} style={{ float: 'right' }}>X</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+
+    // 🚀 On affiche le composant <TodoApp /> dans la <div id="app">
+    const root = ReactDOM.createRoot(document.getElementById("app"));
+    root.render(<TodoApp />);
+  </script>
+</body>
+</html>
